@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
 using System.Text;
 using System.Net;
 using System.Web;
 using System.Web.Script.Serialization;
-//using System.Threading.Tasks;
 using System.Collections;
 using System.IO;
 using System.Drawing;
@@ -15,18 +13,36 @@ using System.Diagnostics;
 
 namespace Browshot
 {
+    /// <summary>
+    /// c# client to interact with the Browshot API. See http://browshot.com/api/documentation for information about the API.
+    /// </summary>
     public class BrowshotClient
     {
         private Version version = new Version(1,10,0);
 
-        #region Constructors
+        #region /// @name Constructors
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="key">API Key</param>
         public BrowshotClient(string key)
             :this(key, false) {}
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="key">API Key</param>
+        /// <param name="debug">Debug flag (not used curently)</param>
         public BrowshotClient(string key, bool debug)
             :this(key, debug, "https://api.browshot.com/api/v1/") {}
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="key">API Key</param>
+        /// <param name="debug">Debug flag (not used curently)</param>
+        /// <param name="baseUrl">Change URL to conect to he Browshot API</param>
         public BrowshotClient(string key, bool debug, string baseUrl)
         {
             this.Key = key;
@@ -38,9 +54,12 @@ namespace Browshot
         #endregion
 
 
-        #region Properties
+        #region /// @name Properties
 
         private string key = String.Empty;
+        /// <summary>
+        /// API key
+        /// </summary>
         public string Key
         {
             get
@@ -55,6 +74,9 @@ namespace Browshot
         }
 
         public string baseUrl = "https://api.browshot.com/api/v1/";
+        /// <summary>
+        /// Base url of the Browshot API.
+        /// </summary>
         public string BaseUrl
         {
             get
@@ -71,6 +93,9 @@ namespace Browshot
 
 
         private bool debug = false;
+        /// <summary>
+        /// Debug flag (not used currently)
+        /// </summary>
         public bool Debug
         {
             get
@@ -87,8 +112,11 @@ namespace Browshot
         #endregion
 
 
-        #region Version
+        #region /// @name Version
 
+        /// <summary>
+        /// API version managed by this library.
+        /// </summary>
         public Version APIVersion
         {
             get
@@ -100,8 +128,14 @@ namespace Browshot
         #endregion
 
 
-        #region Screenshot API
+        #region /// @name Screenshot API
 
+        /// <summary>
+        /// Create a custom browser. See http://browshot.com/api/documentation#browser_create for the response format
+        /// </summary>
+        /// <param name="url">URL of the website to create a screenshot of.</param>
+        /// <param name="arguments">See http://browshot.com/api/documentation#screenshot_create for the full list of possible arguments.</param>
+        /// <returns>JSON output</returns>
         public  Dictionary<string, object> ScreenshotCreate(string url, Hashtable arguments)
         {
             if(arguments == null)
@@ -118,6 +152,11 @@ namespace Browshot
         }
 
 
+        /// <summary>
+        /// Get information about a screenshot requested previously. See http://browshot.com/api/documentation#screenshot_info for the response format.
+        /// </summary>
+        /// <param name="id">Screenshot ID</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> ScreenshotInfo(int id)
         {
             if (id == 0)
@@ -129,7 +168,11 @@ namespace Browshot
             return (Dictionary<string, object>)Reply("screenshot/info", arguments);
         }
 
-
+        /// <summary>
+        /// Get details about screenshots requested. See http://browshot.com/api/documentation#screenshot_list for the response format.
+        /// </summary>
+        /// <param name="limit">Number of screenshots tolist.</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> ScreenshotList(int limit = 100)
         {
             if (limit < 0 || limit > 100)
@@ -141,7 +184,12 @@ namespace Browshot
             return (Dictionary<string, object>)Reply("screenshot/list", arguments);
         }
 
-
+        /// <summary>
+        /// Host a screenshot or thumbnail. See http://browshot.com/api/documentation#screenshot_host for the response format.
+        /// </summary>
+        /// <param name="id">Screenshot ID</param>
+        /// <param name="arguments">See http://browshot.com/api/documentation#screenshot_host for the full list of possible arguments.</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> ScreenshotHost(int id, Hashtable arguments)
         {
             if (id <= 0)
@@ -159,7 +207,12 @@ namespace Browshot
             return (Dictionary<string, object>)Reply("screenshot/host", arguments);
         }
 
-
+        /// <summary>
+        /// Retrieve the screenshot, or a thumbnail. See http://browshot.com/api/documentation#screenshot_thumbnail for the response format.
+        /// </summary>
+        /// <param name="id">Screenshot ID</param>
+        /// <param name="arguments">See http://browshot.com/api/documentation#screenshot_thumbnail for the full list of possible arguments.</param>
+        /// <returns>Thumbnail bitmap</returns>
         public Image Thumbnail(int id, Hashtable arguments)
         {
             if (id <= 0)
@@ -202,6 +255,12 @@ namespace Browshot
             return image;
         }
 
+        /// <summary>
+        /// Share a screenshot. See http://browshot.com/api/documentation#screenshot_share for the response format.
+        /// </summary>
+        /// <param name="id">Screenshot ID</param>
+        /// <param name="arguments">See http://browshot.com/api/documentation#screenshot_share for the full list of possible arguments.</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> ScreenshotShare(int id, Hashtable arguments)
         {
             if (id <= 0)
@@ -219,6 +278,12 @@ namespace Browshot
             return (Dictionary<string, object>)Reply("screenshot/share", arguments);
         }
 
+        /// <summary>
+        /// Delete details of a screenshot. See http://browshot.com/api/documentation#screenshot_delete for the response format.
+        /// </summary>
+        /// <param name="id">Screenshot ID</param>
+        /// <param name="arguments">See http://browshot.com/api/documentation#screenshot_delete for the full list of possible arguments.</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> ScreenshotDelete(int id, Hashtable arguments)
         {
             if (id <= 0)
@@ -238,8 +303,12 @@ namespace Browshot
 
         #endregion
 
-        #region Account API
+        #region /// @name Account API
 
+        /// <summary>
+        /// Return information about the user account. See http://browshot.com/api/documentation#account_info for the response format.
+        /// </summary>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> AccountInfo()
         {
             return (Dictionary<string, object>)Reply("account/info", new Hashtable());
@@ -248,14 +317,22 @@ namespace Browshot
 
         #endregion
 
+        #region /// @name Instance API
 
-        #region Instance API
-
+        /// <summary>
+        /// Return the list of instances as a hash reference. See http://browshot.com/api/documentation#instance_list for the response format.
+        /// </summary>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> InstanceList()
         {
             return (Dictionary<string, object>)Reply("instance/list", new Hashtable());
         }
 
+        /// <summary>
+        /// Return the details of an instance. See http://browshot.com/api/documentation#instance_info for the response format.
+        /// </summary>
+        /// <param name="id">Instance ID</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> InstanceInfo(int id)
         {
             if (id <= 0)
@@ -267,6 +344,11 @@ namespace Browshot
             return (Dictionary<string, object>)Reply("instance/info", arguments);
         }
 
+        /// <summary>
+        /// Create a private instance. See http://browshot.com/api/documentation#instance_create for the response format.
+        /// </summary>
+        /// <param name="arguments">See http://browshot.com/api/documentation#instance_create for the full list of possible arguments.</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> InstanceCreate(Hashtable arguments)
         {
             if (arguments == null)
@@ -277,13 +359,22 @@ namespace Browshot
 
         #endregion
 
-        #region Browser API
+        #region /// @name Browser API
 
+        /// <summary>
+        /// Return the list of browsers as a hash reference. See http://browshot.com/api/documentation#browser_list for the response format.
+        /// </summary>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> BrowserList()
         {
             return (Dictionary<string, object>)Reply("browser/list", new Hashtable());
         }
 
+        /// <summary>
+        /// Return the details of a browser. See http://browshot.com/api/documentation#browser_info for the response format.
+        /// </summary>
+        /// <param name="id">Browser ID</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> BrowserInfo(int id)
         {
             if (id <= 0)
@@ -295,6 +386,11 @@ namespace Browshot
             return (Dictionary<string, object>)Reply("browser/info", arguments);
         }
 
+        /// <summary>
+        /// Create a custom browser. See http://browshot.com/api/documentation#browser_create for the response format.
+        /// </summary>
+        /// <param name="arguments">See http://browshot.com/api/documentation#browser_create for the full list of possible arguments.</param>
+        /// <returns>JSON output</returns>
         public Dictionary<string, object> BrowserCreate(Hashtable arguments)
         {
             if (arguments == null)
@@ -305,8 +401,15 @@ namespace Browshot
 
         #endregion
 
-        #region Simple API
+        #region /// @name Simple API
 
+        /// <summary>
+        /// Retrieve a screenshot in one function. 
+        /// Note: by default, screenshots are cached for 24 hours. You can tune this value with the cache=X parameter.
+        /// </summary>
+        /// <param name="url">URL of the website to create a screenshot of.</param>
+        /// <param name="arguments">>See http://browshot.com/api/documentation#screenshot_create for the full list of possible arguments.</param>
+        /// <returns>Thumbnail image</returns>
         public Image Simple(string url, Hashtable arguments)
         {
             if(url == String.Empty || url == null)
