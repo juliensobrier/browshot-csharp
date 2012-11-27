@@ -15,6 +15,7 @@ Browshot can handle most the API updates within the same major version, e.g. bro
 
 
 The source code can be found on github at https://github.com/juliensobrier/browshot-csharp
+The documentation can be generated fonm the source code with Doxygen, or viewed at http://juliensobrier.github.com/browshot-csharp/
 
 
 == NOTES ==
