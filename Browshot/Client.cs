@@ -11,6 +11,18 @@ using System.Drawing;
 using System.Diagnostics;
 
 
+/*! \mainpage browshot-csharp is a free and open-source library for the Browshot API.
+ * <p>You need to get a free API key at https://browshot.com/ to use this library.</p>
+ * <p>For examples on how to use the library, take a look at the unit tests./p>
+ * <p>Before you use this library, please take a look at the API documentation 
+ * at http://browshot.com/api/documentation.<br /></p>
+ * <p>The source code can be found at https://github.com/juliensobrier/browshot-csharp. Patches are welcome!/p>
+ * <p>This project has been created with Visual Studio Express 2012 (free version).</p>
+ * <p>Implementations for Perl, Python, Ruby and PHP are available at https://browshot.com/api/libraries. 
+ * Announcements about the API and the libraries are on our blog at http://blog.browshot.com/
+ * 
+ * */
+
 namespace Browshot
 {
     /// <summary>
@@ -453,7 +465,7 @@ namespace Browshot
 
         #endregion
 
-        #region Private methods
+        #region /// @name Private methods
 
         private Object Reply(string action, Hashtable arguments)
         {
