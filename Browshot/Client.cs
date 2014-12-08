@@ -152,9 +152,11 @@ namespace Browshot
         {
             if(arguments == null)
                 arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
 
             if (arguments.ContainsKey("url"))
-                throw new Exception("URL can be added in the list of arguments");
+                throw new Exception("URL cannot be added to the list of arguments");
             if(url == null || url == String.Empty)
                 throw new Exception("URL is invalid");
 
@@ -183,14 +185,18 @@ namespace Browshot
         /// <summary>
         /// Get details about screenshots requested. See http://browshot.com/api/documentation#screenshot_list for the response format.
         /// </summary>
-        /// <param name="limit">Number of screenshots tolist.</param>
+        /// <param name="limit">Number of screenshots to list.</param>
         /// <returns>JSON output</returns>
-        public Dictionary<string, object> ScreenshotList(int limit = 100)
+        public Dictionary<string, object> ScreenshotList(int limit = 100, Hashtable arguments = null)
         {
-            if (limit < 0 || limit > 100)
-                throw new Exception("limit is invalid (0 to 100)");
+            if (limit < 0 || limit > 1000)
+                throw new Exception("limit is invalid (0 to 1000)");
 
-            Hashtable arguments = new Hashtable();
+            if (arguments == null)
+                arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
+
             arguments.Add("limit", limit);
 
             return (Dictionary<string, object>)Reply("screenshot/list", arguments);
@@ -209,6 +215,8 @@ namespace Browshot
 
             if (arguments == null)
                 arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
 
             if (arguments.ContainsKey("id"))
                 throw new Exception("ID can be added in the list of arguments");
@@ -232,6 +240,8 @@ namespace Browshot
 
             if (arguments == null)
                 arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
 
             if (arguments.ContainsKey("id"))
                 throw new Exception("ID can be added in the list of arguments");
@@ -240,27 +250,37 @@ namespace Browshot
 
 
             Uri url = MakeUrl("screenshot/thumbnail", arguments);
+            if (this.Debug)
+                Trace.WriteLine(url);
             HttpWebRequest request = HttpWebRequest.CreateHttp(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
             Image image = null;
+
+            HttpWebResponse response = null;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch(System.Net.WebException e)
+            {
+                this.DebugInfo(e.Message);
+                return null;
+            }
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 using (Stream responseStream = response.GetResponseStream())
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    //Do not close the stream, this creates an error when saving a JPEG file
+                    MemoryStream memoryStream = new MemoryStream();
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    do
                     {
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-                        do
-                        {
-                            bytesRead = responseStream.Read(buffer, 0, buffer.Length);
-                            memoryStream.Write(buffer, 0, bytesRead);
-                        } while (bytesRead != 0);
+                        bytesRead = responseStream.Read(buffer, 0, buffer.Length);
+                        memoryStream.Write(buffer, 0, bytesRead);
+                    } while (bytesRead != 0);
 
-                        image = Image.FromStream(memoryStream);
-                    }
+                    image = Image.FromStream(memoryStream);
                 }
             }
 
@@ -280,6 +300,8 @@ namespace Browshot
 
             if (arguments == null)
                 arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
 
             if (arguments.ContainsKey("id"))
                 throw new Exception("ID can be added in the list of arguments");
@@ -303,10 +325,12 @@ namespace Browshot
 
             if (arguments == null)
                 arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
 
             if (arguments.ContainsKey("id"))
                 throw new Exception("ID can be added in the list of arguments");
-
+ 
             arguments.Add("id", id);
 
 
@@ -422,13 +446,15 @@ namespace Browshot
         /// <param name="url">URL of the website to create a screenshot of.</param>
         /// <param name="arguments">>See http://browshot.com/api/documentation#screenshot_create for the full list of possible arguments.</param>
         /// <returns>Thumbnail image</returns>
-        public Image Simple(string url, Hashtable arguments)
+        public Image Simple(string url, Hashtable arguments = null)
         {
             if(url == String.Empty || url == null)
                 throw new Exception("URL is missing");
 
             if (arguments == null)
                 arguments = new Hashtable();
+            else
+                arguments = new Hashtable(arguments);
 
             arguments.Add("url", url);
 
@@ -445,18 +471,17 @@ namespace Browshot
             {
                 using (Stream responseStream = response.GetResponseStream())
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    //Do not close the stream, this creates an error when saving a JPEG file
+                    MemoryStream memoryStream = new MemoryStream();
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    do
                     {
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-                        do
-                        {
-                            bytesRead = responseStream.Read(buffer, 0, buffer.Length);
-                            memoryStream.Write(buffer, 0, bytesRead);
-                        } while (bytesRead != 0);
+                        bytesRead = responseStream.Read(buffer, 0, buffer.Length);
+                        memoryStream.Write(buffer, 0, bytesRead);
+                    } while (bytesRead != 0);
 
-                        image = Image.FromStream(memoryStream);
-                    }
+                    image = Image.FromStream(memoryStream);
                 }
             }
 
@@ -467,15 +492,35 @@ namespace Browshot
 
         #region /// @name Private methods
 
+        private void DebugInfo(string message)
+        {
+            if (this.Debug)
+                Console.WriteLine(message);
+        }
+
         private Object Reply(string action, Hashtable arguments)
         {
             Uri url = MakeUrl(action, arguments);
 
             HttpWebRequest request = HttpWebRequest.CreateHttp(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            request.AllowAutoRedirect = true;
+            request.UserAgent = "Browshot-sharp " + this.version;
 
-            if (response.StatusCode == HttpStatusCode.OK)
+            HttpWebResponse response = null;
+
+            try
             {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch(System.Net.WebException e)
+            {
+                //this.DebugInfo(e.ToString());
+                response = (HttpWebResponse)e.Response;
+                this.DebugInfo("Request error: " + response.StatusCode);
+            }
+
+            /*if (response.StatusCode == HttpStatusCode.OK)
+            {*/
                 string result = String.Empty;
 
                 using (Stream responseStream = response.GetResponseStream())
@@ -497,12 +542,14 @@ namespace Browshot
                     readStream.Close();
                 }
                 //Trace.WriteLine(result);
+                if(this.Debug)
+                    Trace.WriteLine(result);
                     
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.DeserializeObject(result);
-            }
+            /*}
             else
-                return null;
+                return null;*/
         }
 
         public Object GenericError(string message)
@@ -539,6 +586,8 @@ namespace Browshot
 
                 builder.Query = query.ToString();
             }
+
+            DebugInfo(builder.Uri.ToString());
 
             return builder.Uri;
         }
