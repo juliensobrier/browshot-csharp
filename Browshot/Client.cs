@@ -30,7 +30,7 @@ namespace Browshot
     /// </summary>
     public class BrowshotClient
     {
-        private Version version = new Version(1,10,0);
+        private Version version = new Version(1,10,1);
 
         #region /// @name Constructors
 
