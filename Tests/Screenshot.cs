@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
 
 using Browshot;
 
@@ -18,7 +19,7 @@ namespace Tests
         [TestInitialize]
         public void SetUp()
         {
-            browshot = new BrowshotClient("vPTtKKLBtPUNxVwwfEKlVvekuxHyTXyi"); // test1
+            browshot = new BrowshotClient("vPTtKKLBtPUNxVwwfEKlVvekuxHyTXyi", true); // test1
         }
 
         #region ScreenshotCreate
@@ -136,7 +137,7 @@ namespace Tests
         [TestMethod]
         public void Thumbnail()
         {
-            Dictionary<string, object> result = browshot.ScreenshotList();
+            Dictionary<string, object> result = browshot.ScreenshotList(1);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count > 0);
 
@@ -153,6 +154,7 @@ namespace Tests
             }
 
             Assert.AreNotEqual(String.Empty, keyId);
+            Trace.WriteLine("Screenshot ID: " + keyId);
 
             Image thumbnail = browshot.Thumbnail(int.Parse(keyId), null);
             Assert.IsNotNull(thumbnail);

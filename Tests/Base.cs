@@ -15,7 +15,7 @@ namespace BrowshotClientTests
         [TestInitialize]
         public void SetUp()
         {
-            browshot = new BrowshotClient("API_KEY");
+            browshot = new BrowshotClient("API_KEY"); // API_KEY
         }
 
         [TestMethod]

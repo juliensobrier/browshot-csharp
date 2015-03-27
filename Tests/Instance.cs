@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using Browshot;
 
@@ -15,7 +16,7 @@ namespace Tests
         [TestInitialize]
         public void SetUp()
         {
-            browshot = new BrowshotClient("vPTtKKLBtPUNxVwwfEKlVvekuxHyTXyi"); // test1
+            browshot = new BrowshotClient("vPTtKKLBtPUNxVwwfEKlVvekuxHyTXyi", false); // vPTtKKLBtPUNxVwwfEKlVvekuxHyTXyi=test1
         }
 
         [TestMethod]
@@ -54,6 +55,8 @@ namespace Tests
             Assert.IsTrue(free.Length > 0);
 
             Dictionary<string, object> first = (Dictionary<string, object>)free[0];
+            foreach(string key in first.Keys)
+                Trace.WriteLine(key + ": " + first[key].ToString());
             Dictionary<string, object> info = browshot.InstanceInfo(int.Parse(first["id"].ToString()));
 
             Assert.IsTrue(info.ContainsKey("type"));

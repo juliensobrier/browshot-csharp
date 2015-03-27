@@ -17,7 +17,6 @@ using System.Diagnostics;
  * <p>Before you use this library, please take a look at the API documentation 
  * at http://browshot.com/api/documentation.<br /></p>
  * <p>The source code can be found at https://github.com/juliensobrier/browshot-csharp. Patches are welcome!/p>
- * <p>This project has been created with Visual Studio Express 2012 (free version).</p>
  * <p>Implementations for Perl, Python, Ruby and PHP are available at https://browshot.com/api/libraries. 
  * Announcements about the API and the libraries are on our blog at http://blog.browshot.com/
  * <p>The latest documentation for borwshot-csharp can be found at http://juliensobrier.github.com/browshot-csharp/</p>
@@ -26,7 +25,7 @@ using System.Diagnostics;
 namespace Browshot
 {
     /// <summary>
-    /// c# client to interact with the Browshot API. See http://browshot.com/api/documentation for information about the API.
+    /// c# client to interact with the Browshot API. See https://browshot.com/api/documentation for information about the API.
     /// </summary>
     public class BrowshotClient
     {
@@ -85,7 +84,7 @@ namespace Browshot
             }
         }
 
-        public string baseUrl = "https://api.browshot.com/api/v1/";
+        private string baseUrl = @"https://api.browshot.com/api/v1/";
         /// <summary>
         /// Base url of the Browshot API.
         /// </summary>
@@ -143,7 +142,7 @@ namespace Browshot
         #region /// @name Screenshot API
 
         /// <summary>
-        /// Create a custom browser. See http://browshot.com/api/documentation#browser_create for the response format
+        /// Request a screenshot. See http://browshot.com/api/documentation#screenshot_create for the response format
         /// </summary>
         /// <param name="url">URL of the website to create a screenshot of.</param>
         /// <param name="arguments">See http://browshot.com/api/documentation#screenshot_create for the full list of possible arguments.</param>
@@ -516,7 +515,10 @@ namespace Browshot
             {
                 //this.DebugInfo(e.ToString());
                 response = (HttpWebResponse)e.Response;
-                this.DebugInfo("Request error: " + response.StatusCode);
+                if(response != null)
+                    this.DebugInfo("Request error: " + response.StatusCode);
+                else
+                    this.DebugInfo(e.ToString());
             }
 
             /*if (response.StatusCode == HttpStatusCode.OK)

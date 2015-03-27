@@ -1,12 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Browshot", "Browshot\Browshot.csproj", "{2452F8F2-76CD-4D2A-8C66-1E4C386B8E39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{86B38AC7-0ABE-4200-990C-2A170919F0C0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2452F8F2-76CD-4D2A-8C66-1E4C386B8E39} = {2452F8F2-76CD-4D2A-8C66-1E4C386B8E39}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "browshot-download", "browshot-download\browshot-download.csproj", "{30A544B7-CE3E-4A03-AEF3-F7FD01164A28}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2452F8F2-76CD-4D2A-8C66-1E4C386B8E39} = {2452F8F2-76CD-4D2A-8C66-1E4C386B8E39}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "command-line", "command-line\command-line.csproj", "{095D17EA-764A-4583-A375-06CF6F45F30F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +31,14 @@ Global
 		{86B38AC7-0ABE-4200-990C-2A170919F0C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86B38AC7-0ABE-4200-990C-2A170919F0C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86B38AC7-0ABE-4200-990C-2A170919F0C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30A544B7-CE3E-4A03-AEF3-F7FD01164A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A544B7-CE3E-4A03-AEF3-F7FD01164A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30A544B7-CE3E-4A03-AEF3-F7FD01164A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30A544B7-CE3E-4A03-AEF3-F7FD01164A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095D17EA-764A-4583-A375-06CF6F45F30F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095D17EA-764A-4583-A375-06CF6F45F30F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095D17EA-764A-4583-A375-06CF6F45F30F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095D17EA-764A-4583-A375-06CF6F45F30F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
