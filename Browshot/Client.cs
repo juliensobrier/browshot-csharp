@@ -44,7 +44,7 @@ namespace Browshot
         /// Constructor
         /// </summary>
         /// <param name="key">API Key</param>
-        /// <param name="debug">Debug flag (not used curently)</param>
+        /// <param name="debug">Debug flag</param>
         public BrowshotClient(string key, bool debug)
             :this(key, debug, "https://api.browshot.com/api/v1/") {}
 
