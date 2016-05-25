@@ -1,4 +1,4 @@
-Browshot version 1.10.0
+Browshot C# library
 ================================
 
 
@@ -16,6 +16,13 @@ Browshot can handle most the API updates within the same major version, e.g. bro
 
 The source code can be found on github at https://github.com/juliensobrier/browshot-csharp
 The documentation can be generated fonm the source code with Doxygen, or viewed at http://juliensobrier.github.com/browshot-csharp/
+
+
+== browshot-cmd.exe ==
+
+You can take screenshots from the command line on Windows with browshot-cmd.exe. You can download the latest release at https://github.com/juliensobrier/browshot-csharp/releases/ (browshot-cmd.zip).
+
+The full documentation is available at https://browshot.com/api/command-line/windows
 
 
 == NOTES ==

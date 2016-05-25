@@ -57,7 +57,7 @@ namespace cmd
                   v =>  url = v },
                 { "k|key=", "your API {KEY}\n" + String.Format("default = {0}", key),
                    v =>  key = v },
-                { "f|file=", "{FILENAME} to use for the screenshto images\n" + String.Format("default = {0}", file),
+                { "f|file=", "{FILENAME} to use for the thumbnail images\n" + String.Format("default = {0}", file),
                    v =>  file = v },
                 { "i|instance=", 
                     "{INSTANCE_ID} to use\n" + String.Format("default = {0}", instance_id),
@@ -200,7 +200,7 @@ namespace cmd
         static void ShowHelp(OptionSet p)
         {
             Console.WriteLine("Usage: browshot.exe: OPTIONS");
-            Console.WriteLine("Interact wit the Browshot API.");
+            Console.WriteLine("Interact with the Browshot API.");
             Console.WriteLine("https://browshot.com/api/documentation");
             Console.WriteLine();
             Console.WriteLine("Options:");
