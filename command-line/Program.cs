@@ -118,9 +118,9 @@ namespace cmd
                 extra = p.Parse (args);
             }
             catch (OptionException e) {
-                Console.Write ("browshot.exe: ");
+                Console.Write ("browshot-cmd.exe: ");
                 Console.WriteLine (e.Message);
-                Console.WriteLine ("Try `browshot.exe --help' for more information");
+                Console.WriteLine ("Try `browshot-cmd.exe --help' for more information");
                 return;
             }
 
